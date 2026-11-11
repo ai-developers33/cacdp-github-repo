@@ -1,0 +1,91 @@
+x-service: &svc
+  build: .
+  volumes:
+    - ./data:/data
+  environment:
+    KAFKA_BOOTSTRAP: kafka:9092
+    GATEWAY_URL: http://payment-gateway:8080
+    DATA_DIR: /data
+
+services:
+  kafka:
+    image: apache/kafka:3.9.0
+    hostname: kafka
+    environment:
+      KAFKA_NODE_ID: 1
+      KAFKA_PROCESS_ROLES: broker,controller
+      KAFKA_LISTENERS: PLAINTEXT://:9092,CONTROLLER://:9093
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092
+      KAFKA_CONTROLLER_LISTENER_NAMES: CONTROLLER
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: CONTROLLER:PLAINTEXT,PLAINTEXT:PLAINTEXT
+      KAFKA_CONTROLLER_QUORUM_VOTERS: 1@kafka:9093
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
+      KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
+      KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS: 0
+      KAFKA_NUM_PARTITIONS: 3
+      KAFKA_AUTO_CREATE_TOPICS_ENABLE: "true"
+    healthcheck:
+      test: ["CMD-SHELL", "/opt/kafka/bin/kafka-broker-api-versions.sh --bootstrap-server localhost:9092 >/dev/null 2>&1"]
+      interval: 5s
+      timeout: 10s
+      retries: 30
+
+  payment-gateway:
+    <<: *svc
+    hostname: payment-gateway
+    command: ["python", "gateway_service.py"]
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8080/ping', timeout=2)"]
+      interval: 3s
+      timeout: 5s
+      retries: 20
+
+  inventory-0:
+    <<: *svc
+    command: ["python", "services.py", "--role", "inventory", "--replica", "0"]
+    depends_on:
+      kafka: {condition: service_healthy}
+
+  inventory-1:
+    <<: *svc
+    command: ["python", "services.py", "--role", "inventory", "--replica", "1"]
+    depends_on:
+      kafka: {condition: service_healthy}
+
+  inventory-2:
+    <<: *svc
+    command: ["python", "services.py", "--role", "inventory", "--replica", "2"]
+    depends_on:
+      kafka: {condition: service_healthy}
+
+  shipping:
+    <<: *svc
+    command: ["python", "services.py", "--role", "shipping"]
+    depends_on:
+      kafka: {condition: service_healthy}
+
+  billing:
+    <<: *svc
+    command: ["python", "services.py", "--role", "billing"]
+    depends_on:
+      kafka: {condition: service_healthy}
+      payment-gateway: {condition: service_healthy}
+
+  fulfillment:
+    <<: *svc
+    command: ["python", "services.py", "--role", "fulfillment"]
+    depends_on:
+      kafka: {condition: service_healthy}
+
+  telemetry-monitor:
+    <<: *svc
+    command: ["python", "monitor_service.py"]
+    depends_on:
+      kafka: {condition: service_healthy}
+      payment-gateway: {condition: service_healthy}
+
+  runner:
+    <<: *svc
+    profiles: ["tools"]
+    command: ["true"]

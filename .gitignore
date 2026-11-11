@@ -1,0 +1,36 @@
+# Python bytecode & virtual environments
+__pycache__/
+*.py[cod]
+*$py.class
+.venv/
+venv/
+env/
+*.egg-info/
+
+# macOS & editor metadata
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+.vscode/
+.idea/
+*.swp
+
+# Local scratch backups, manuscript submission drafts, & intermediate zip bundles
+data_backup_*/
+v1_backup/
+submission_package/
+live_study2_results/
+live_study2_results.zip
+*.log
+
+# Author files and generated outputs
+*.docx
+*.doc
+*.pdf
+*.tex
+*.zip
+__MACOSX/
+study2_live_kafka/generated_figures/
+study2_live_kafka/data/control_state.json
+recomputed/

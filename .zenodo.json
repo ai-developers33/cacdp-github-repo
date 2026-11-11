@@ -1,0 +1,26 @@
+{
+  "title": "Change-Aware Characterization and Early-Warning Prediction of Cascading Service Degradation in Event-Driven Cloud Architectures — Replication Package",
+  "version": "1.0.0",
+  "upload_type": "software",
+  "access_right": "open",
+  "license": "mit",
+  "language": "eng",
+  "publication_date": "2026-11-11",
+  "creators": [
+    {
+      "name": "Thadishetti, Ravi Shanker",
+      "orcid": "0009-0000-7088-0531"
+    }
+  ],
+  "description": "Source code and recorded synthetic-workload data for the CACDP Study 2 benchmark. Includes the Kafka and HTTP testbed, feature extraction, run-grouped cross-validation, held-out scenario evaluation and file integrity checks. The study1_summary directory contains the 30 tabulated baseline and slowdown run summaries. The reproduce.py entry point checks the queue model and reconstructs the Study 2 outputs.",
+  "keywords": [
+    "Event-driven architecture",
+    "Apache Kafka",
+    "Cloud microservices",
+    "Cascading service degradation",
+    "Schema compatibility",
+    "Consumer lag",
+    "Queueing carry-over",
+    "Early-warning prediction"
+  ]
+}

@@ -1,0 +1,31 @@
+protocol,scenario,run_number,mean_latency_s,nearest_rank_p95_latency_s
+Kafka Pilot,baseline,1,0.0099,0.0113
+Kafka Pilot,baseline,2,0.0093,0.0098
+Kafka Pilot,baseline,3,0.0111,0.0128
+Kafka Pilot,baseline,4,0.0092,0.0132
+Kafka Pilot,baseline,5,0.0097,0.0115
+Kafka Pilot,slowdown,1,30.6593,44.5975
+Kafka Pilot,slowdown,2,27.5923,47.6213
+Kafka Pilot,slowdown,3,50.8416,61.6947
+Kafka Pilot,slowdown,4,8.0353,16.6269
+Kafka Pilot,slowdown,5,9.0391,19.2813
+No-Drain,baseline,1,0.00037,0.00058
+No-Drain,baseline,2,0.00034,0.00051
+No-Drain,baseline,3,0.00048,0.00060
+No-Drain,baseline,4,0.00031,0.00041
+No-Drain,baseline,5,0.00024,0.00034
+No-Drain,slowdown,1,7.9335,16.6325
+No-Drain,slowdown,2,20.6052,27.6143
+No-Drain,slowdown,3,34.8407,48.2104
+No-Drain,slowdown,4,46.8644,59.3944
+No-Drain,slowdown,5,59.5551,68.4200
+Drained,baseline,1,0.00025,0.00041
+Drained,baseline,2,0.00032,0.00051
+Drained,baseline,3,0.00034,0.00057
+Drained,baseline,4,0.00023,0.00031
+Drained,baseline,5,0.00022,0.00031
+Drained,slowdown,1,7.6908,14.7304
+Drained,slowdown,2,7.6923,15.6830
+Drained,slowdown,3,7.6889,14.4754
+Drained,slowdown,4,7.6938,14.7343
+Drained,slowdown,5,7.6911,14.8809
