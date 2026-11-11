@@ -73,4 +73,4 @@ The Compose file configures the broker and services. The producer schedules the 
 
 ## License and citation
 
-GitHub release `v1.0.1` includes the recorded Study 2 analysis and the Study 1 run summaries. Cite the [Zenodo archive for this release](https://doi.org/10.5281/zenodo.24146554). The software uses the MIT license. Author and citation details are in `CITATION.cff`.
+GitHub release `v1.0.1` includes the recorded Study 2 analysis and the Study 1 run summaries. Cite the [Zenodo archive for this release](https://doi.org/10.5281/zenodo.24147806). The software uses the MIT license. Author and citation details are in `CITATION.cff`.
