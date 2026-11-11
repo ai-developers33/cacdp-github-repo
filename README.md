@@ -7,7 +7,7 @@ This repository contains run-level latency data from Study 1 and the Study 2 ben
 From a fresh checkout, run the following on macOS or Linux. The offline replay was tested with CPython 3.12.14. It takes the archived logs as input and writes rebuilt outputs to a temporary directory. It also checks the Study 1 queue model against the tabulated slowdown runs.
 
 ```sh
-git clone https://github.com/ai-developers33/cacdp-github-repo.git
+git clone --branch v1.0.1 https://github.com/ai-developers33/cacdp-github-repo.git
 cd cacdp-github-repo
 python3.12 -m venv .venv
 . .venv/bin/activate
@@ -73,4 +73,4 @@ The Compose file configures the broker and services. The producer schedules the 
 
 ## License and citation
 
-Version 1.0.0 covers the recorded Study 2 analysis and the Study 1 run summaries. The software uses the MIT license. Author and citation details are in `CITATION.cff`.
+GitHub release `v1.0.1` includes the recorded Study 2 analysis and the Study 1 run summaries. Cite the [Zenodo archive for this release](https://doi.org/10.5281/zenodo.24146554). The software uses the MIT license. Author and citation details are in `CITATION.cff`.
