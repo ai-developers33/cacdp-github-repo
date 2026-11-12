@@ -63,7 +63,44 @@ python study2_live_kafka/generate_study2_figures.py
 
 ## Collect new traces
 
-The live runner requires Docker with Compose v2. It moves an existing data directory to a timestamped backup before starting. A full run schedules five repetitions of each scenario. Each run offers events for 30 seconds and then waits for the broker drain check, subject to a 45-second timeout. Wall-clock results depend on the host.
+The live benchmark runs nine Kafka and HTTP scenarios five times each (45 runs). Each run offers events for 30 seconds, then waits up to 45 seconds for the broker queues to drain. The runner backs up an existing `study2_live_kafka/data/` directory before collecting new traces. For the exact numbers in the paper, use [the archived-data replay](#reproduce-the-published-analysis). Fresh measurements depend on the host.
+
+### macOS starting without Docker
+
+1. Open Terminal and run `brew --version`. If the command is missing, install Homebrew using the [official macOS installer](https://brew.sh/), follow its **Next steps** to put `brew` on your PATH, then open a new Terminal.
+
+2. Paste this block to install the tools, make the Compose and Buildx plugins available to Docker, and start Colima with 4 CPUs and 6 GiB of memory, as in the recorded Mac run. The final three commands should each print a version.
+
+   ```sh
+   brew install colima docker docker-compose docker-buildx python@3.12
+   brew_prefix=$(brew --prefix)
+   export PATH="$brew_prefix/bin:$PATH"
+   plugin_dir="${DOCKER_CONFIG:-$HOME/.docker}/cli-plugins"
+   mkdir -p "$plugin_dir"
+   for plugin in docker-compose docker-buildx; do
+     if [ ! -e "$plugin_dir/$plugin" ]; then
+       ln -s "$brew_prefix/bin/$plugin" "$plugin_dir/$plugin"
+     fi
+   done
+   colima start --cpu 4 --memory 6
+   docker --context colima version --format '{{.Server.Version}}'
+   docker compose version
+   docker buildx version
+   ```
+
+3. In a directory where you want to keep the experiment, paste this block. It downloads release `v1.0.1` into a new `cacdp-live-v1.0.1` folder and runs all 45 measurements using Colima.
+
+   ```sh
+   git clone --depth 1 --branch v1.0.1 https://github.com/ai-developers33/cacdp-github-repo.git cacdp-live-v1.0.1 &&
+     cd cacdp-live-v1.0.1 &&
+     DOCKER_CONTEXT=colima python3.12 study2_live_kafka/run_live_study2.py --reps 5 --duration 30
+   ```
+
+On success, the runner prints `COMPLETED!` and writes `study2_live_kafka/live_study2_results.zip` inside that checkout. Open the ZIP and inspect `live_study2_results/study2_eval_results.json` for the model scores. When finished with the VM, run `colima stop`.
+
+### With Docker and Compose already running
+
+From the root of the release checkout or extracted replication ZIP, run:
 
 ```sh
 python3 study2_live_kafka/run_live_study2.py --reps 5 --duration 30
